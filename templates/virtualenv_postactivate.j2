@@ -20,7 +20,7 @@ export {{ django_env_prefix|upper }}_DB_{{ database.name|upper }}_PORT='{{ datab
 
 export {{ django_env_prefix|upper }}_APP_PATH='{{ django_path }}'
 export {{ django_env_prefix|upper }}_APP_NAME='{{ django_project_name }}'
-export {{ django_env_prefix|upper }}_APP_RELEASE_DIR=${{{ django_env_prefix|upper }}_APP_PATH}'releases'
+export {{ django_env_prefix|upper }}_APP_RELEASE_DIR='{{ django_release_dir }}'
 export {{ django_env_prefix|upper }}_APP_VENV='{{ django_virtualenv }}'
 export {{ django_env_prefix|upper }}_APP_LOG_DIR='{{ django_log_dir }}'
 export {{ django_env_prefix|upper }}_APP_PID='{{ django_virtualenv }}bin/{{ django_project_name }}.pid'

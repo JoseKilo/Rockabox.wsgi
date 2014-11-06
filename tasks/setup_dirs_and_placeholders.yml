@@ -5,6 +5,13 @@
         group={{ django_gunicorn_group }} mode=0774 state=directory
 
 - name: Create persistent folders
-  file: path={{ django_media_dir }} state=directory
+  file: path={{ item }} state=directory
         owner={{ django_gunicorn_user }} group={{ django_gunicorn_group }}
-  when: django_media_dir is defined
+  when: item is defined
+  with_items:
+    - '{{ django_media_dir }}'
+    - '{{ django_static_dir }}'
+
+- name: Create releases directory
+  file: path={{ django_release_dir }} state=directory
+        owner={{ django_gunicorn_user }} group={{ django_gunicorn_group }}
