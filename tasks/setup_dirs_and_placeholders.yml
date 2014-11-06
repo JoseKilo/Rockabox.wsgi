@@ -1,0 +1,10 @@
+---
+
+- name: Create the application log folder
+  file: path={{ django_log_dir }} owner={{ django_gunicorn_user }}
+        group={{ django_gunicorn_group }} mode=0774 state=directory
+
+- name: Create persistent folders
+  file: path={{ django_media_dir }} state=directory
+        owner={{ django_gunicorn_user }} group={{ django_gunicorn_group }}
+  when: django_media_dir is defined

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Environmental variables
+
+# Django settings
+export DJANGO_DIR='{{ django_path }}current'
+
+# Misc settings
+export PIP_USE_MIRRORS=True
+export PS1="\[\033[0;33m\]\u\[\033[0;37m\]@\[\033[0;96m\]{{ django_project_name }}\[\033[0;37m\]]\342\224\200[\[\033[0;32m\]\w\[\033[0;37m\]]\n\[\033[0;37m\]\342\224\224\342\224\200\342\224\200\342\225\274 \[\033[0m\]"
+
+# Project variables
+{% for database in django_databases %}
+export {{ django_env_prefix|upper }}_DB_{{ database.name|upper }}_NAME='{{ database.name }}'
+export {{ django_env_prefix|upper }}_DB_{{ database.name|upper }}_USER='{{ database.user }}'
+export {{ django_env_prefix|upper }}_DB_{{ database.name|upper }}_PASSWORD='{{ database.password }}'
+export {{ django_env_prefix|upper }}_DB_{{ database.name|upper }}_HOST='{{ database.host }}'
+export {{ django_env_prefix|upper }}_DB_{{ database.name|upper }}_PORT='{{ database.port }}'
+{% endfor %}
+
+export {{ django_env_prefix|upper }}_APP_PATH='{{ django_path }}'
+export {{ django_env_prefix|upper }}_APP_NAME='{{ django_project_name }}'
+export {{ django_env_prefix|upper }}_APP_RELEASE_DIR=${{{ django_env_prefix|upper }}_APP_PATH}'releases'
+export {{ django_env_prefix|upper }}_APP_VENV='{{ django_virtualenv }}'
+export {{ django_env_prefix|upper }}_APP_LOG_DIR='{{ django_log_dir }}'
+export {{ django_env_prefix|upper }}_APP_PID='{{ django_virtualenv }}bin/{{ django_project_name }}.pid'
+export {{ django_env_prefix|upper }}_APP_STATIC_DIR='{{ django_static_dir }}'
+export {{ django_env_prefix|upper }}_APP_MEDIA_DIR='{{ django_media_dir }}'
+
+# Additional project specific env vars
+{% for key, value in django_env_vars.iteritems() %}
+export {{ key|upper }}='{{ value }}'
+{% endfor %}

@@ -1,0 +1,16 @@
+---
+
+- name: Ensure that the env file permissions are set properly
+  file: path={{ django_virtualenv }} recurse=yes state=directory
+        owner={{ django_gunicorn_user }} group={{ django_gunicorn_group }}
+  notify: restart application
+
+- name: Ensure that the application file permissions are set properly
+  file: path={{ django_path }} recurse=yes owner={{ django_gunicorn_user }}
+        group={{ django_gunicorn_group }} state=directory
+  notify: restart application
+
+- name: Ensure that the log file permissions are set properly
+  file: path={{ django_log_dir }} recurse=yes owner={{ django_gunicorn_user }}
+        group={{ django_gunicorn_group }} state=directory
+  notify: restart application

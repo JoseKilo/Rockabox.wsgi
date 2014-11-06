@@ -1,0 +1,22 @@
+---
+
+- name: Create the Nginx configuration file
+  template: src=nginx_site_config.j2
+            dest=/etc/nginx/sites-available/{{ django_project_name }}
+            backup=yes
+
+- name: Ensure that the default site is disabled
+  file: path=/etc/nginx/sites-enabled/default state=absent
+
+- name: Ensure that the application site is enabled
+  file: src=/etc/nginx/sites-available/{{ django_project_name }}
+        dest=/etc/nginx/sites-enabled/{{ django_project_name }}
+        state=link
+  notify:
+    - restart nginx
+
+- name: Create the maintenance page
+  template: src=maintenance.html dest={{ django_path }}maintenance_off.html
+            mode=0664
+  notify:
+    - restart nginx

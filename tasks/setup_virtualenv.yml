@@ -1,0 +1,23 @@
+---
+
+- name: Create the virtualenv
+  command: virtualenv {{ django_virtualenv }} --no-site-packages
+           creates={{ django_virtualenv }}bin/activate
+
+- name: Create the Gunicorn script file
+  template: src=gunicorn_start.j2
+            dest={{ django_virtualenv }}bin/gunicorn_start
+            owner={{ django_gunicorn_user }}
+            group={{ django_gunicorn_group }}
+            mode=0755
+            backup=yes
+
+- name: Create the virtualenv postactivate script to set environment variables
+  template: src=virtualenv_postactivate.j2
+            dest={{ django_virtualenv }}bin/postactivate
+            owner={{ django_gunicorn_user }}
+            group={{ django_gunicorn_group }}
+            mode=0640
+            backup=yes
+  tags:
+    - env_vars

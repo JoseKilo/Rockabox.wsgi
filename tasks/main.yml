@@ -1,0 +1,15 @@
+---
+
+- include: setup_system.yml
+
+- include: create_users_and_groups.yml
+
+- include: setup_dirs_and_placeholders.yml
+
+- include: setup_virtualenv.yml
+
+- include: set_file_permissions.yml
+
+- include: setup_supervisor.yml
+
+- include: setup_nginx.yml

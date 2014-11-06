@@ -1,0 +1,13 @@
+---
+
+- name: restart application
+  supervisorctl: name=all state=restarted
+
+- name: restart nginx
+  service: name=nginx state=restarted
+
+- name: reread supervisor config
+  command: supervisorctl reread
+
+- name: update supervisor
+  command: supervisorctl update
