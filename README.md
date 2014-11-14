@@ -1,3 +1,4 @@
+# Django WSGI
 This is a role for installing a wsgi application container, It makes the
 following assumptions about your application:
 
@@ -7,17 +8,13 @@ following assumptions about your application:
 * gunicorn is required In your projects virtualenv rather than globally, to
 allow for multiple projects on one server
 
-Role variables:
----------------
+## Role variables:
 
-Required
-~~~~~~~~
+### Required
+* wsgi_project_name (The name of your project, letters underscores only)
+* wsgi_wsgi_path (the relative python path to your applications wsgi file)
 
-* `wsgi_project_name` (The name of your project, letters underscores only)
-* `wsgi_wsgi_path` (the relative python path to your applications wsgi file)
-
-Overidable
-~~~~~~~~~~
+## Overidable
 Loads! take a look in defaults/main.yml for the full list
 
 Once you have this role on your server, all you need to do is put your
