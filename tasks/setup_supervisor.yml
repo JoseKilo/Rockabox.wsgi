@@ -2,12 +2,12 @@
 
 - name: Create the Supervisor config file
   template: src=supervisor_config.j2
-            dest=/etc/supervisor/conf.d/{{ django_project_name }}.conf
+            dest=/etc/supervisor/conf.d/{{ wsgi_project_name }}.conf
             backup=yes
   notify:
     - reread supervisor config
     - update supervisor
 
 - name: Create the supervisor log file
-  command: touch {{ django_log_dir }}supervisor.log
-           creates={{ django_log_dir }}supervisor.log
+  command: touch {{ wsgi_log_dir }}supervisor.log
+           creates={{ wsgi_log_dir }}supervisor.log

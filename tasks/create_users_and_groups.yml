@@ -1,26 +1,26 @@
 ---
 
 - name: Users and Groups | Create home directory
-  file: path={{ django_path }} state=directory
+  file: path={{ wsgi_path }} state=directory
 
 - name: Users and Groups | Create the application user
-  user: name={{ django_gunicorn_user }} state=present
-        shell={% if django_ssh %}/bin/bash{% else %}/bin/nologin{% endif %}
-        createhome=yes home={{ django_path }}
+  user: name={{ wsgi_gunicorn_user }} state=present
+        shell={% if wsgi_ssh %}/bin/bash{% else %}/bin/nologin{% endif %}
+        createhome=yes home={{ wsgi_path }}
 
 - name: Users and Groups | Create bash profiles
-  template: src=bash_profile.j2 dest={{ django_path }}.bash_profile
-  when: django_ssh
+  template: src=bash_profile.j2 dest={{ wsgi_path }}.bash_profile
+  when: wsgi_ssh
 
 - name: Users and Groups | Create the application group
-  group: name={{ django_gunicorn_group }} system=yes state=present
+  group: name={{ wsgi_gunicorn_group }} system=yes state=present
 
 - name: Users and Groups | Add the application user to the application group
-  user: name={{ django_gunicorn_user }} groups={{ django_gunicorn_group }}
+  user: name={{ wsgi_gunicorn_user }} groups={{ wsgi_gunicorn_group }}
         state=present
 
 - name: Access Control | Add our deploy key to each applications authorized keys
-  authorized_key: user={{ django_gunicorn_user }} key="{{ deploy_key }}"
+  authorized_key: user={{ wsgi_gunicorn_user }} key="{{ deploy_key }}"
                   state=present
   tags:
     - keys
@@ -38,7 +38,7 @@
     - keys
 
 - name: Access Control | Copy our vagrant key if we are using vagrant
-  authorized_key: user={{ django_gunicorn_user }}
+  authorized_key: user={{ wsgi_gunicorn_user }}
                   key="{{ vagrant_key.stdout }}" state=present
   when: vagrant_home.stat.isdir is defined
   tags:

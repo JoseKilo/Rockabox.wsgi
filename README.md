@@ -1,8 +1,11 @@
-This is a role for installing a django application container, It makes the
+This is a role for installing a wsgi application container, It makes the
 following assumptions about your application:
 
-    - It has a wsgi file, see below
-    - It has gunicorn installed*
+* It has a [wsgi](http://wsgi.readthedocs.org/en/latest/) file, see below
+* It has [gunicorn](http://gunicorn.org/) installed*
+
+* gunicorn is required In your projects virtualenv rather than globally, to
+allow for multiple projects on one server
 
 Role variables:
 ---------------
@@ -10,8 +13,8 @@ Role variables:
 Required
 ~~~~~~~~
 
-    - django_project_name (The name of your project, letters underscores only)
-    - django_wsgi_path (the relative python path to your applications wsgi file)
+* `wsgi_project_name` (The name of your project, letters underscores only)
+* `wsgi_wsgi_path` (the relative python path to your applications wsgi file)
 
 Overidable
 ~~~~~~~~~~
@@ -20,17 +23,17 @@ Loads! take a look in defaults/main.yml for the full list
 Once you have this role on your server, all you need to do is put your
 application at:
 
-    django_project_name@host.com:current
+    wsgi_project_name@host.com:current
 
 ...and your good to go.
 
 To restart your application you can:
 
-    sudo supervisorctl restart django_project_name
+    sudo supervisorctl restart wsgi_project_name
 
 you can ssh into your box as your application with:
 
-    django_project_name@host.com
+    wsgi_project_name@host.com
 
 The following environmental variables are made available to your application
 and your ssh session:
@@ -44,8 +47,8 @@ and your ssh session:
     PREFIX_APP_STATIC_DIR (The location of your static files directory, if you have one)
     PREFIX_APP_MEDIA_DIR (The location of your media files directory, if you have one)
 
-Where `PREFIX` is django_project_name in upper case, you can override this
-with `django_env_prefix`
+Where `PREFIX` is wsgi_project_name in upper case, you can override this
+with `wsgi_env_prefix`
 
 Also any databases you have defined in your application will be available as
 environmental variables using the following format:
@@ -57,3 +60,31 @@ environmental variables using the following format:
     PREFIX_DB_DBNAME_PORT (The port your database runs on)
 
 Where DBNAME is the upper-cased name of your database, and PREFIX is as above.
+
+
+Deployment
+----------
+To deploy to this container, ensure your project is available in
+
+    $PREFIX_APP_RELEASE_DIR/current
+
+And ensure your projects dependencies are installed into
+
+    $PREFIX_APP_VENV
+
+Once deployed, restart your application with
+
+    sudo service $PREFIX_APP_NAME restart
+
+Ensure your media is stored in `$PREFIX_APP_MEDIA_DIR`, and your
+static files in `$PREFIX_APP_STATIC_DIR`
+
+To see stdout and stderr from your application, see:
+
+    $PREFIX_APP_LOG_DIR/supervisor.log
+
+
+Future Work
+-----------
+- Release fabric scripts for deployment
+- Allow for multiple projects on one server (See http://bit.ly/1Bpw8Cr)

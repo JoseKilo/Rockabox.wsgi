@@ -4,7 +4,7 @@ alias ll='ls -lah --color=auto'
 alias l='ls -1 --color=auto'
 
 # If the user has a virtual env, source activate and postactivate
-if [ -d {{ django_virtualenv }} ]; then
-    . {{ django_virtualenv }}bin/activate
-    . {{ django_virtualenv }}bin/postactivate
+if [ -d {{ wsgi_virtualenv }} ]; then
+    . {{ wsgi_virtualenv }}bin/activate
+    . {{ wsgi_virtualenv }}bin/postactivate
 fi

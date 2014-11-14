@@ -1,17 +1,17 @@
 ---
 
 - name: Create the application log folder
-  file: path={{ django_log_dir }} owner={{ django_gunicorn_user }}
-        group={{ django_gunicorn_group }} mode=0774 state=directory
+  file: path={{ wsgi_log_dir }} owner={{ wsgi_gunicorn_user }}
+        group={{ wsgi_gunicorn_group }} mode=0774 state=directory
 
 - name: Create persistent folders
   file: path={{ item }} state=directory
-        owner={{ django_gunicorn_user }} group={{ django_gunicorn_group }}
+        owner={{ wsgi_gunicorn_user }} group={{ wsgi_gunicorn_group }}
   when: item is defined
   with_items:
-    - '{{ django_media_dir }}'
-    - '{{ django_static_dir }}'
+    - '{{ wsgi_media_dir }}'
+    - '{{ wsgi_static_dir }}'
 
 - name: Create releases directory
-  file: path={{ django_release_dir }} state=directory
-        owner={{ django_gunicorn_user }} group={{ django_gunicorn_group }}
+  file: path={{ wsgi_release_dir }} state=directory
+        owner={{ wsgi_gunicorn_user }} group={{ wsgi_gunicorn_group }}

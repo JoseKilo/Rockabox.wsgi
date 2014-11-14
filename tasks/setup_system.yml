@@ -1,14 +1,14 @@
 ---
 
 - name: Ensure OpenSSl and libssl are the latest versions
-  apt: name={{ item }} update_cache={{ django_update_apt_cache }} state=latest
+  apt: name={{ item }} update_cache={{ wsgi_update_apt_cache }} state=latest
   with_items:
     - openssl
     - libssl-dev
     - libssl-doc
 
 - name: Install base packages
-  apt: name={{ item }} update_cache={{ django_update_apt_cache }} force=yes
+  apt: name={{ item }} update_cache={{ wsgi_update_apt_cache }} force=yes
        state=installed
   with_items:
     - build-essential
@@ -24,6 +24,6 @@
   pip: name=pip state=latest
 
 - name: Install any additional packages through apt
-  apt: name={{ item }} update_cache={{ django_update_apt_cache }} force=yes
+  apt: name={{ item }} update_cache={{ wsgi_update_apt_cache }} force=yes
        state=installed
-  with_items: django_extra_apt_packages
+  with_items: wsgi_extra_apt_packages

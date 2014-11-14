@@ -13,3 +13,5 @@
 - include: setup_supervisor.yml
 
 - include: setup_nginx.yml
+  tags:
+    - webserver

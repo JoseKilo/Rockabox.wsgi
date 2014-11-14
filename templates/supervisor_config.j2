@@ -1,4 +1,4 @@
-[program:{{ django_project_name }}]
-command = {{ django_virtualenv }}bin/gunicorn_start
-user = {{ django_gunicorn_user }}
-stdout_errfile = {{ django_log_dir }}supervisor.log
+[program:{{ wsgi_project_name }}]
+command = {{ wsgi_virtualenv }}bin/gunicorn_start
+user = {{ wsgi_gunicorn_user }}
+stdout_errfile = {{ wsgi_log_dir }}supervisor.log
