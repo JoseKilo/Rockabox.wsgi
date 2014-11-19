@@ -21,3 +21,10 @@
             backup=yes
   tags:
     - env_vars
+
+- name: Install any additional packages through pip
+  pip: name={{ item.name }}
+       version={{ item.version }}
+       state=present
+       virtualenv={{ wsgi_virtualenv }}
+  with_items: wsgi_extra_pip_packages
