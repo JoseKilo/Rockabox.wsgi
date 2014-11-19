@@ -1,5 +1,9 @@
 ---
 
+- name: Load in project specific vars
+  include_vars: "{{ vars_file }}"
+  when: vars_file is defined
+
 - include: setup_system.yml
 
 - include: create_users_and_groups.yml
