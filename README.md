@@ -81,7 +81,17 @@ To see stdout and stderr from your application, see:
     $PREFIX_APP_LOG_DIR/supervisor.log
 
 
+Multiple wsgi apps in one play
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+You can have multiple wsgi apps in one play, by using the `vars_file` var:
+
+  roles:
+    - {role: Rockabox.wsgi, vars_file: "/path/to/vars/projectA.yml"}
+    - {role: Rockabox.wsgi, vars_file: "../../vars/projectB.yml"}
+
+The path needs to be relative to the playbook, or absolute, as described in
+the [ansible docs](http://docs.ansible.com/include_vars_module.html#options)
+
 Future Work
 -----------
 - Release fabric scripts for deployment
-- Allow for multiple projects on one server (See http://bit.ly/1Bpw8Cr)
