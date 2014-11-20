@@ -50,13 +50,13 @@ with `wsgi_env_prefix`
 Also any databases you have defined in your application will be available as
 environmental variables using the following format:
 
-    PREFIX_DB_DBNAME_NAME (The name of your database)
-    PREFIX_DB_DBNAME_USER (The username for your database)
-    PREFIX_DB_DBNAME_PASSWORD (The password for your database)
-    PREFIX_DB_DBNAME_HOST (The host for your database)
-    PREFIX_DB_DBNAME_PORT (The port your database runs on)
+    PREFIX_DB_DBID_NAME (The name of your database)
+    PREFIX_DB_DBID_USER (The username for your database)
+    PREFIX_DB_DBID_PASSWORD (The password for your database)
+    PREFIX_DB_DBID_HOST (The host for your database)
+    PREFIX_DB_DBID_PORT (The port your database runs on)
 
-Where DBNAME is the upper-cased name of your database, and PREFIX is as above.
+Where DBID is the upper-cased id of your database, and PREFIX is as above.
 
 
 Deployment
