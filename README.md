@@ -1,12 +1,8 @@
-# Django WSGI
-This is a role for installing a wsgi application container, It makes the
+# Rockabox WSGI
+This is a role for installing a wsgi application container. It makes the
 following assumptions about your application:
 
 * It has a [wsgi](http://wsgi.readthedocs.org/en/latest/) file, see below
-* It has [gunicorn](http://gunicorn.org/) installed*
-
-* gunicorn is required In your projects virtualenv rather than globally, to
-allow for multiple projects on one server
 
 ## Role variables:
 
@@ -28,9 +24,11 @@ To restart your application you can:
 
     sudo supervisorctl restart wsgi_project_name
 
-you can ssh into your box as your application with:
+you can ssh into your box as your application with*:
 
     wsgi_project_name@host.com
+
+\* Providing you did not set `wsgi_ssh: no`
 
 The following environmental variables are made available to your application
 and your ssh session:
@@ -98,6 +96,12 @@ All of your environmental variables are made available to the process running
 the cron, the command will look something like this:
 
     /bin/bash -c "source ~/.bash_profile && {{ command }} &>> {{ logfile }}
+
+Note: the `frequency` parameter is passed through to `minute`, so ensure you
+use the correct syntax e.g:
+
+    frequency: */5 # Runs every 5 minutes
+    frequency: 5 # Runs at 5 minutes past every hour
 
 Multiple wsgi apps in one play
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
