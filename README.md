@@ -35,12 +35,12 @@ and your ssh session:
 
     PREFIX_APP_PATH (The location of your project)
     PREFIX_APP_NAME (The name of your project)
-    PREFIX_APP_RELEASE_DIR (The location of your projects releases)
-    PREFIX_APP_VENV (The location of your projects virtual environment)
-    PREFIX_APP_LOG_DIR (The location of your projects log directory)
-    PREFIX_APP_PID (The location of your projects pid file)
-    PREFIX_APP_STATIC_DIR (The location of your static files directory, if you have one)
-    PREFIX_APP_MEDIA_DIR (The location of your media files directory, if you have one)
+    PREFIX_RELEASE_DIR (The location of your projects releases)
+    PREFIX_VENV (The location of your projects virtual environment)
+    PREFIX_LOG_DIR (The location of your projects log directory)
+    PREFIX_PID (The location of your projects pid file)
+    PREFIX_STATIC_DIR (The location of your static files directory, if you have one)
+    PREFIX_MEDIA_DIR (The location of your media files directory, if you have one)
 
 Where `PREFIX` is wsgi_project_name in upper case, you can override this
 with `wsgi_env_prefix`

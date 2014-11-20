@@ -18,14 +18,14 @@ export {{ wsgi_env_prefix|upper }}_DB_{{ database.id|upper }}_HOST='{{ database.
 export {{ wsgi_env_prefix|upper }}_DB_{{ database.id|upper }}_PORT='{{ database.port }}'
 {% endfor %}
 
+export {{ wsgi_env_prefix|upper }}_RELEASE_DIR='{{ wsgi_release_dir }}'
 export {{ wsgi_env_prefix|upper }}_APP_PATH='{{ wsgi_path }}'
 export {{ wsgi_env_prefix|upper }}_APP_NAME='{{ wsgi_project_name }}'
-export {{ wsgi_env_prefix|upper }}_APP_RELEASE_DIR='{{ wsgi_release_dir }}'
-export {{ wsgi_env_prefix|upper }}_APP_VENV='{{ wsgi_virtualenv }}'
-export {{ wsgi_env_prefix|upper }}_APP_LOG_DIR='{{ wsgi_log_dir }}'
-export {{ wsgi_env_prefix|upper }}_APP_PID='{{ wsgi_virtualenv }}bin/{{ wsgi_project_name }}.pid'
-export {{ wsgi_env_prefix|upper }}_APP_STATIC_DIR='{{ wsgi_static_dir }}'
-export {{ wsgi_env_prefix|upper }}_APP_MEDIA_DIR='{{ wsgi_media_dir }}'
+export {{ wsgi_env_prefix|upper }}_VENV='{{ wsgi_virtualenv }}'
+export {{ wsgi_env_prefix|upper }}_LOG_DIR='{{ wsgi_log_dir }}'
+export {{ wsgi_env_prefix|upper }}_PID='{{ wsgi_virtualenv }}bin/{{ wsgi_project_name }}.pid'
+export {{ wsgi_env_prefix|upper }}_STATIC_DIR='{{ wsgi_static_dir }}'
+export {{ wsgi_env_prefix|upper }}_MEDIA_DIR='{{ wsgi_media_dir }}'
 
 # Additional project specific env vars
 {% for key, value in wsgi_env_vars.iteritems() %}
