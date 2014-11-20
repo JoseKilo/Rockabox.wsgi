@@ -14,6 +14,9 @@ wsgi_extra_pip_packages: []
 # Allow us SSH login as the application user
 wsgi_ssh: yes
 
+# Give our user sudo access
+wsgi_sudo: yes
+
 # Prefix all your env vars with this (will be upper cased)
 wsgi_env_prefix: '{{ wsgi_project_name }}'
 

@@ -45,5 +45,6 @@
     - keys
 
 - name: Access Control | Grant sudo access for new users
-  template: src=sudoers.j2 dest=/etc/sudoers.d/application_users mode=0440
+  template: src=sudoers.j2 dest=/etc/sudoers.d/{{ wsgi_project_name }} mode=0440
+  when: wsgi_sudo
 
