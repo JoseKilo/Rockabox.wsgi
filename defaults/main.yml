@@ -43,3 +43,6 @@ wsgi_force_ssl: no
 wsgi_ssl_crt_file:
 wsgi_ssl_key_file:
 wsgi_non_ssl_locations: []
+
+# Cron tasks, see README for docs
+wsgi_cron_tasks: []

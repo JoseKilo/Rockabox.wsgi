@@ -81,6 +81,24 @@ To see stdout and stderr from your application, see:
     $PREFIX_APP_LOG_DIR/supervisor.log
 
 
+Application Cron tasks
+~~~~~~~~~~~~~~~~~~~~~~
+You can add cron tasks to your wsgi app using the `wsgi_cron_tasks` variable,
+an example is as follows:
+
+    wsgi_cron_tasks:
+
+        name: Rotate the logs
+        user: root
+        command: "/usr/sbin/logrotate -f /etc/logrotate.d/log_conf"
+        frequency: "*/5"
+        logfile: "/dev/null"
+
+All of your environmental variables are made available to the process running
+the cron, the command will look something like this:
+
+    /bin/bash -c "source ~/.bash_profile && {{ command }} &>> {{ logfile }}
+
 Multiple wsgi apps in one play
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 You can have multiple wsgi apps in one play, by using the `vars_file` var:
@@ -91,6 +109,7 @@ You can have multiple wsgi apps in one play, by using the `vars_file` var:
 
 The path needs to be relative to the playbook, or absolute, as described in
 the [ansible docs](http://docs.ansible.com/include_vars_module.html#options)
+
 
 Future Work
 -----------

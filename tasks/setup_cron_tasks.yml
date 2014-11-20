@@ -1,0 +1,9 @@
+---
+
+- name: Cron | Setup App cron tasks
+  cron: name="App cron task {{ item.name }}"
+        user={{ item.user }}
+        minute={{ item.frequency }}
+        job="/bin/bash -c \"source ~/.bash_profile && {{ item.command }} &>> {{ item.logfile }}\""
+  with_items:
+    - wsgi_cron_tasks
