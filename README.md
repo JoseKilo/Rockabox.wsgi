@@ -7,8 +7,8 @@ following assumptions about your application:
 ## Role variables:
 
 ### Required
-* wsgi_project_name (The name of your project, letters underscores only)
-* wsgi_wsgi_path (the relative python path to your applications wsgi file)
+* `wsgi_project_name` (The name of your project, letters and underscores only)
+* `wsgi_wsgi_path` (the relative python path to your application's wsgi file)
 
 ## Overidable
 Loads! take a look in defaults/main.yml for the full list
@@ -18,7 +18,7 @@ application at:
 
     wsgi_project_name@host.com:current
 
-...and your good to go.
+...and you're good to go.
 
 To restart your application you can:
 
