@@ -1,18 +1,14 @@
-# Django WSGI
-This is a role for installing a wsgi application container, It makes the
+# Rockabox WSGI
+This is a role for installing a wsgi application container. It makes the
 following assumptions about your application:
 
 * It has a [wsgi](http://wsgi.readthedocs.org/en/latest/) file, see below
-* It has [gunicorn](http://gunicorn.org/) installed*
-
-* gunicorn is required In your projects virtualenv rather than globally, to
-allow for multiple projects on one server
 
 ## Role variables:
 
 ### Required
-* wsgi_project_name (The name of your project, letters underscores only)
-* wsgi_wsgi_path (the relative python path to your applications wsgi file)
+* `wsgi_project_name` (The name of your project, letters and underscores only)
+* `wsgi_wsgi_path` (the relative python path to your application's wsgi file)
 
 ## Overidable
 Loads! take a look in defaults/main.yml for the full list
@@ -22,15 +18,17 @@ application at:
 
     wsgi_project_name@host.com:current
 
-...and your good to go.
+...and you're good to go.
 
 To restart your application you can:
 
     sudo supervisorctl restart wsgi_project_name
 
-you can ssh into your box as your application with:
+you can ssh into your box as your application with*:
 
     wsgi_project_name@host.com
+
+\* Providing you did not set `wsgi_ssh: no`
 
 The following environmental variables are made available to your application
 and your ssh session:
@@ -81,6 +79,30 @@ To see stdout and stderr from your application, see:
     $PREFIX_APP_LOG_DIR/supervisor.log
 
 
+Application Cron tasks
+~~~~~~~~~~~~~~~~~~~~~~
+You can add cron tasks to your wsgi app using the `wsgi_cron_tasks` variable,
+an example is as follows:
+
+    wsgi_cron_tasks:
+
+        name: Rotate the logs
+        user: root
+        command: "/usr/sbin/logrotate -f /etc/logrotate.d/log_conf"
+        frequency: "*/5"
+        logfile: "/dev/null"
+
+All of your environmental variables are made available to the process running
+the cron, the command will look something like this:
+
+    /bin/bash -c "source ~/.bash_profile && {{ command }} &>> {{ logfile }}
+
+Note: the `frequency` parameter is passed through to `minute`, so ensure you
+use the correct syntax e.g:
+
+    frequency: */5 # Runs every 5 minutes
+    frequency: 5 # Runs at 5 minutes past every hour
+
 Multiple wsgi apps in one play
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 You can have multiple wsgi apps in one play, by using the `vars_file` var:
@@ -91,6 +113,7 @@ You can have multiple wsgi apps in one play, by using the `vars_file` var:
 
 The path needs to be relative to the playbook, or absolute, as described in
 the [ansible docs](http://docs.ansible.com/include_vars_module.html#options)
+
 
 Future Work
 -----------

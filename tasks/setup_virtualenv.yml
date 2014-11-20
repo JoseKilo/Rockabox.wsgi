@@ -1,10 +1,14 @@
 ---
 
-- name: Create the virtualenv
+- name: Virtualenv | Create the virtualenv
   command: virtualenv {{ wsgi_virtualenv }} --no-site-packages
            creates={{ wsgi_virtualenv }}bin/activate
 
-- name: Create the Gunicorn script file
+- name: Virtualenv | Ensure we have Gunicorn installed
+  pip: name=gunicorn state=present
+       virtualenv={{ wsgi_virtualenv }}
+
+- name: Virtualenv | Create the Gunicorn script file
   template: src=gunicorn_start.j2
             dest={{ wsgi_virtualenv }}bin/gunicorn_start
             owner={{ wsgi_gunicorn_user }}
@@ -12,7 +16,7 @@
             mode=0755
             backup=yes
 
-- name: Create the virtualenv postactivate script to set environment variables
+- name: Virtualenv | Create the virtualenv postactivate script to set environment variables
   template: src=virtualenv_postactivate.j2
             dest={{ wsgi_virtualenv }}bin/postactivate
             owner={{ wsgi_gunicorn_user }}
@@ -22,7 +26,7 @@
   tags:
     - env_vars
 
-- name: Install any additional packages through pip
+- name: Virtualenv | Install any additional packages through pip
   pip: name={{ item.name }}
        version={{ item.version }}
        state=present

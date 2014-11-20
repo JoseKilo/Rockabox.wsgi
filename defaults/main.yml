@@ -17,7 +17,7 @@ wsgi_ssh: yes
 # Prefix all your env vars with this (will be upper cased)
 wsgi_env_prefix: '{{ wsgi_project_name }}'
 
-# Django
+# Application
 wsgi_virtualenv: '/var/lib/{{ wsgi_project_name }}/venv/'
 wsgi_path: '/var/www/{{ wsgi_project_name }}/'
 wsgi_release_dir: '{{ wsgi_path }}releases/'
@@ -43,3 +43,6 @@ wsgi_force_ssl: no
 wsgi_ssl_crt_file:
 wsgi_ssl_key_file:
 wsgi_non_ssl_locations: []
+
+# Cron tasks, see README for docs
+wsgi_cron_tasks: []
