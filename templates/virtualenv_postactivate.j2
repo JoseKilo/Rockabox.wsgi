@@ -11,11 +11,11 @@ export PS1="\[\033[0;33m\]\u\[\033[0;37m\]@\[\033[0;96m\]{{ wsgi_project_name }}
 
 # Project variables
 {% for database in wsgi_databases %}
-export {{ wsgi_env_prefix|upper }}_DB_{{ database.name|upper }}_NAME='{{ database.name }}'
-export {{ wsgi_env_prefix|upper }}_DB_{{ database.name|upper }}_USER='{{ database.user }}'
-export {{ wsgi_env_prefix|upper }}_DB_{{ database.name|upper }}_PASSWORD='{{ database.password }}'
-export {{ wsgi_env_prefix|upper }}_DB_{{ database.name|upper }}_HOST='{{ database.host }}'
-export {{ wsgi_env_prefix|upper }}_DB_{{ database.name|upper }}_PORT='{{ database.port }}'
+export {{ wsgi_env_prefix|upper }}_DB_{{ database.id|upper }}_NAME='{{ database.name }}'
+export {{ wsgi_env_prefix|upper }}_DB_{{ database.id|upper }}_USER='{{ database.user }}'
+export {{ wsgi_env_prefix|upper }}_DB_{{ database.id|upper }}_PASSWORD='{{ database.password }}'
+export {{ wsgi_env_prefix|upper }}_DB_{{ database.id|upper }}_HOST='{{ database.host }}'
+export {{ wsgi_env_prefix|upper }}_DB_{{ database.id|upper }}_PORT='{{ database.port }}'
 {% endfor %}
 
 export {{ wsgi_env_prefix|upper }}_APP_PATH='{{ wsgi_path }}'
