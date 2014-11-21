@@ -89,7 +89,8 @@ an example is as follows:
         name: Rotate the logs
         user: root
         command: "/usr/sbin/logrotate -f /etc/logrotate.d/log_conf"
-        frequency: "*/5"
+        frequency:
+            minute: "*/5"
         logfile: "/dev/null"
 
 All of your environmental variables are made available to the process running
@@ -97,11 +98,8 @@ the cron, the command will look something like this:
 
     /bin/bash -c "source ~/.bash_profile && {{ command }} &>> {{ logfile }}
 
-Note: the `frequency` parameter is passed through to `minute`, so ensure you
-use the correct syntax e.g:
-
-    frequency: */5 # Runs every 5 minutes
-    frequency: 5 # Runs at 5 minutes past every hour
+Note: you can set day, hour, minute or month in frequency, values not set
+default to '*'
 
 Multiple wsgi apps in one play
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

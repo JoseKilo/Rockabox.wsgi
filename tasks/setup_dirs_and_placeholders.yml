@@ -10,7 +10,6 @@
   when: item is defined
   with_items:
     - '{{ wsgi_media_dir }}'
-    - '{{ wsgi_static_dir }}'
 
 - name: Create releases directory
   file: path={{ wsgi_release_dir }} state=directory
