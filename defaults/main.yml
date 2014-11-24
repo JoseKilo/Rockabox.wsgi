@@ -25,10 +25,13 @@ wsgi_virtualenv: '/var/lib/{{ wsgi_project_name }}/venv/'
 wsgi_path: '/var/www/{{ wsgi_project_name }}/'
 wsgi_release_dir: '{{ wsgi_path }}releases/'
 wsgi_log_dir: '/var/log/{{ wsgi_project_name }}/'
-wsgi_static_dir: '{{ wsgi_storage_dir }}{{ wsgi_project_name }}/static/'
+wsgi_static_dir: '{{ wsgi_path }}current/static/'
 wsgi_media_dir: '{{ wsgi_storage_dir }}{{ wsgi_project_name }}/media/'
 wsgi_databases: []
 wsgi_env_vars: []
+
+# Expose this app via a webserver
+wsgi_expose: yes
 
 # Gunicorn
 wsgi_gunicorn_user: '{{ wsgi_project_name }}'

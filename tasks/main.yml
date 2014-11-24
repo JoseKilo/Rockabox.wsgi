@@ -8,6 +8,8 @@
 
 - include: create_users_and_groups.yml
 
+- include: setup_cron_tasks.yml
+
 - include: setup_dirs_and_placeholders.yml
 
 - include: setup_virtualenv.yml
@@ -17,5 +19,6 @@
 - include: setup_supervisor.yml
 
 - include: setup_nginx.yml
+  when: wsgi_expose
   tags:
     - webserver
