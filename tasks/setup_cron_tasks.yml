@@ -9,5 +9,4 @@
         month={{ item.frequency.month | default('*') }}
         weekday={{ item.frequency.weekday | default('*') }}
         job="/bin/bash -c \"source ~/.bash_profile && {{ item.command }} &>> {{ item.logfile }}\""
-  with_items:
-    - wsgi_cron_tasks
+  with_items: wsgi_cron_tasks
