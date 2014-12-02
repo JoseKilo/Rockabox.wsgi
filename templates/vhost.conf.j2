@@ -12,6 +12,13 @@ server {
     {% if wsgi_ssl %}
     listen 443 ssl;
 
+    {% if wsgi_force_ssl %}
+    if ( $scheme = http ) {
+        rewrite ^ https://$host$request_uri last;
+    }
+    add_header Strict-Transport-Security "max-age=31536000; includeSubdomains";
+    {% endif %}
+
     ssl_certificate     {{ wsgi_ssl_crt_file }};
     ssl_certificate_key {{ wsgi_ssl_key_file }};
     ssl_protocols       SSLv3 TLSv1 TLSv1.1 TLSv1.2;
@@ -66,7 +73,7 @@ server {
         # Try to serve static files from nginx, no point in making an
         # *application* server like Unicorn/Rainbows! serve static files.
         if (!-f $request_filename) {
-            proxy_pass {{ 'https' if wsgi_ssl and wsgi_force_ssl else 'http' }}://{{ wsgi_project_name }}_wsgi_server;
+            proxy_pass http://{{ wsgi_project_name }}_wsgi_server;
             break;
         }
     }
@@ -81,4 +88,8 @@ server {
     location = /maintenance.html {
         root {{ wsgi_path }};
     }
+
+    {% for wsgi_nginx_include_path in wsgi_nginx_include_paths %}
+    include {{ wsgi_nginx_include_path }};
+    {% endfor %}
 }
