@@ -32,3 +32,26 @@
        state=present
        virtualenv={{ wsgi_virtualenv }}
   with_items: wsgi_extra_pip_packages
+
+- name: Install native dependencies for PIL/Pillow
+  apt: name={{ item }}
+       update_cache={{ wsgi_update_apt_cache }}
+       force=yes
+       state=installed
+  with_items:
+    - libjpeg-dev
+    - libjpeg62-dev
+    - libfreetype6-dev
+    - zlib1g-dev
+  when: wsgi_enable_python_image
+
+- name: Enable PIL/Pillow optional libraries to be found by pip
+  file: src=/usr/lib/{{ ansible_architecture }}-linux-gnu/{{ item }}
+        dest=/usr/lib/{{ item }}
+        state=link
+  with_items:
+      - libfreetype.so
+      - libz.so
+      - libjpeg.so.62
+      - libjpeg.so
+  when: wsgi_enable_python_image
