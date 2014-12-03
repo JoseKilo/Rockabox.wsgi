@@ -11,6 +11,7 @@ wsgi_storage_dir: '/mnt/'
 wsgi_update_apt_cache: yes
 wsgi_extra_apt_packages: []
 wsgi_extra_pip_packages: []
+wsgi_enable_python_image: no
 # Allow us SSH login as the application user
 wsgi_ssh: yes
 

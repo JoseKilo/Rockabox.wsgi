@@ -24,7 +24,7 @@ To restart your application you can:
 
     sudo supervisorctl restart wsgi_project_name
 
-you can ssh into your box as your application with*:
+you can ssh into your box as your application with\*:
 
     wsgi_project_name@host.com
 
@@ -42,7 +42,7 @@ and your ssh session:
     PREFIX_STATIC_DIR (The location of your static files directory, if you have one)
     PREFIX_MEDIA_DIR (The location of your media files directory, if you have one)
 
-Where `PREFIX` is wsgi_project_name in upper case, you can override this
+Where `PREFIX` is wsgi\_project\_name in upper case, you can override this
 with `wsgi_env_prefix`
 
 Also any databases you have defined in your application will be available as
@@ -55,6 +55,15 @@ environmental variables using the following format:
     PREFIX_DB_DBID_PORT (The port your database runs on)
 
 Where DBID is the upper-cased id of your database, and PREFIX is as above.
+
+Pil/Pillow support
+~~~~~~~~~~~~~~~~~~
+
+Python imaging libraries (PIL / Pillow) depend on native libraries to support
+some image formats or to provide additional functionality, like JPEG or FreeType
+libraries. Those dependencies can be automatically installed using:
+
+    wsgi_enable_python_image: yes
 
 
 Deployment
@@ -99,15 +108,15 @@ the cron, the command will look something like this:
     /bin/bash -c "source ~/.bash_profile && {{ command }} &>> {{ logfile }}
 
 Note: you can set day, hour, minute or month in frequency, values not set
-default to '*'
+default to '\*'
 
 Multiple wsgi apps in one play
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 You can have multiple wsgi apps in one play, by using the `vars_file` var:
 
   roles:
-    - {role: Rockabox.wsgi, vars_file: "/path/to/vars/projectA.yml"}
-    - {role: Rockabox.wsgi, vars_file: "../../vars/projectB.yml"}
+    - {role: Rockabox.wsgi, vars\_file: "/path/to/vars/projectA.yml"}
+    - {role: Rockabox.wsgi, vars\_file: "../../vars/projectB.yml"}
 
 The path needs to be relative to the playbook, or absolute, as described in
 the [ansible docs](http://docs.ansible.com/include_vars_module.html#options)
