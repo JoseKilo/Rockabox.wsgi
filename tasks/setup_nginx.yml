@@ -18,7 +18,15 @@
     - restart nginx
 
 - name: Create the maintenance page
-  template: src=maintenance.html dest={{ wsgi_path }}maintenance_off.html
+  template: src=maintenance.html
+            dest="{{ wsgi_storage_dir }}{{ wsgi_project_name }}maintenance.html"
+            mode=0664
+  notify:
+    - restart nginx
+
+- name: Create the 500 error page
+  template: src=500.html
+            dest="{{ wsgi_storage_dir }}{{ wsgi_project_name }}500.html"
             mode=0664
   notify:
     - restart nginx
