@@ -3,6 +3,9 @@ This is a role for installing a wsgi application container. It makes the
 following assumptions about your application:
 
 * It has a [wsgi](http://wsgi.readthedocs.org/en/latest/) file, see below
+* You have installed Nginx in another role prior to running this one \*
+
+\* e.g - [Stouts Nginx](https://galaxy.ansible.com/list#/roles/854)
 
 ## Role variables:
 
@@ -14,19 +17,10 @@ following assumptions about your application:
 Loads! take a look in defaults/main.yml for the full list
 
 Once you have this role on your server, all you need to do is put your
-application at:
+application at `wsgi_project_name@host.com:current` ...and you're good to go.
 
-    wsgi_project_name@host.com:current
-
-...and you're good to go.
-
-To restart your application you can:
-
-    sudo supervisorctl restart wsgi_project_name
-
-you can ssh into your box as your application with\*:
-
-    wsgi_project_name@host.com
+To restart your application you can `sudo supervisorctl restart wsgi_project_name`
+you can ssh into your box as your application with\* `wsgi_project_name@host.com`
 
 \* Providing you did not set `wsgi_ssh: no`
 
@@ -56,18 +50,13 @@ environmental variables using the following format:
 
 Where DBID is the upper-cased id of your database, and PREFIX is as above.
 
-Pil/Pillow support
-~~~~~~~~~~~~~~~~~~
+## Pil/Pillow support
 
 Python imaging libraries (PIL / Pillow) depend on native libraries to support
 some image formats or to provide additional functionality, like JPEG or FreeType
-libraries. Those dependencies can be automatically installed using:
+libraries. Those dependencies can be automatically installed using `wsgi_enable_python_image: yes`
 
-    wsgi_enable_python_image: yes
-
-
-Deployment
-----------
+## Deployment
 To deploy to this container, ensure your project is available in
 
     $PREFIX_APP_RELEASE_DIR/current
@@ -87,9 +76,8 @@ To see stdout and stderr from your application, see:
 
     $PREFIX_APP_LOG_DIR/supervisor.log
 
+## Application Cron tasks
 
-Application Cron tasks
-~~~~~~~~~~~~~~~~~~~~~~
 You can add cron tasks to your wsgi app using the `wsgi_cron_tasks` variable,
 an example is as follows:
 
@@ -110,18 +98,18 @@ the cron, the command will look something like this:
 Note: you can set day, hour, minute or month in frequency, values not set
 default to '\*'
 
-Multiple wsgi apps in one play
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## Multiple wsgi apps in one play
+
 You can have multiple wsgi apps in one play, by using the `vars_file` var:
 
-  roles:
-    - {role: Rockabox.wsgi, vars\_file: "/path/to/vars/projectA.yml"}
-    - {role: Rockabox.wsgi, vars\_file: "../../vars/projectB.yml"}
+    roles:
+      - {role: Rockabox.wsgi, vars\_file: "/path/to/vars/projectA.yml"}
+      - {role: Rockabox.wsgi, vars\_file: "../../vars/projectB.yml"}
 
 The path needs to be relative to the playbook, or absolute, as described in
 the [ansible docs](http://docs.ansible.com/include_vars_module.html#options)
 
 
-Future Work
------------
+## Future Work
+
 - Release fabric scripts for deployment
