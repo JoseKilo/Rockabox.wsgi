@@ -1,5 +1,4 @@
 ---
-
 galaxy_info:
   author: Rockabox Devs
   company: Rockabox
@@ -15,4 +14,4 @@ galaxy_info:
     - packaging
     - system
     - web
-  dependencies: []
+dependencies: []
