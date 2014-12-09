@@ -5,6 +5,7 @@
 # Required (Override these!)
 wsgi_project_name: 'myproject'
 wsgi_wsgi_path: 'myproject.wsgi'
+wsgi_support_email: 'support@example.com'
 
 # Misc
 wsgi_storage_dir: '/mnt/'
