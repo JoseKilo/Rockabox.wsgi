@@ -81,12 +81,12 @@ server {
     # Error pages
     error_page 500 502 504 /500.html;
     location = /500.html {
-        root {{ wsgi_path }}current/templates/;
+        root {{ wsgi_storage_dir }}{{ wsgi_project_name }};
     }
 
     error_page 503 /maintenance.html;
     location = /maintenance.html {
-        root {{ wsgi_path }};
+        root {{ wsgi_storage_dir }}{{ wsgi_project_name }};
     }
 
     {% for wsgi_nginx_include_path in wsgi_nginx_include_paths %}
