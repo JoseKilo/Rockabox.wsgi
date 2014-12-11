@@ -1,4 +1,4 @@
-# Rockabox WSGI
+# Rockabox WSGI App Container
 This is a role for installing a wsgi application container. It makes the
 following assumptions about your application:
 
@@ -103,12 +103,15 @@ default to '\*'
 You can have multiple wsgi apps in one play, by using the `vars_file` var:
 
     roles:
-      - {role: Rockabox.wsgi, vars\_file: "/path/to/vars/projectA.yml"}
-      - {role: Rockabox.wsgi, vars\_file: "../../vars/projectB.yml"}
+
+      - Rockabox.wsgi_app_container
+        vars_file: "/path/to/vars/projectA.yml"
+
+      - Rockabox.wsgi_app_container
+        vars_file: "../../vars/projectB.yml"
 
 The path needs to be relative to the playbook, or absolute, as described in
 the [ansible docs](http://docs.ansible.com/include_vars_module.html#options)
-
 
 ## Future Work
 
