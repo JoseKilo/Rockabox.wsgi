@@ -1,6 +1,6 @@
 ---
 
-- name: restart application
+- name: restart applications
   supervisorctl: name=all state=restarted
 
 - name: restart nginx

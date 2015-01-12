@@ -25,6 +25,7 @@
             backup=yes
   tags:
     - env_vars
+  notify: restart applications
 
 - name: Virtualenv | Install any additional packages through pip
   pip: name={{ item.name }}
