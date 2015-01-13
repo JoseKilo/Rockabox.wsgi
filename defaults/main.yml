@@ -13,8 +13,12 @@ wsgi_update_apt_cache: yes
 wsgi_extra_apt_packages: []
 wsgi_extra_pip_packages: []
 wsgi_enable_python_image: no
+
 # Allow us SSH login as the application user
 wsgi_ssh: yes
+
+# The public part of the key we will use for deploys (defaults to your own)
+wsgi_ssh_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
 
 # Give our user sudo access
 wsgi_sudo: yes

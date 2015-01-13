@@ -4,8 +4,12 @@ following assumptions about your application:
 
 * It has a [wsgi](http://wsgi.readthedocs.org/en/latest/) file, see below
 * You have installed Nginx in another role prior to running this one \*
+* You have a public key generated and stored at `~/.ssh/id_rsa.pub`
+(see [this guide](https://help.github.com/articles/generating-ssh-keys/) for help)**
 
 \* e.g - [Stouts Nginx](https://galaxy.ansible.com/list#/roles/854)
+
+\*\* Unless you have specified another public key in `wsgi_ssh_key`
 
 ## Role variables:
 
