@@ -19,7 +19,7 @@
   user: name={{ wsgi_gunicorn_user }} groups={{ wsgi_gunicorn_group }}
         state=present
 
-- name: Access Control | Add our public deploy key to each applications authorized keys
+- name: Access Control | Add our public deploy key to our applications authorized keys
   authorized_key: user={{ wsgi_gunicorn_user }} key="{{ wsgi_ssh_key }}"
                   state=present
   tags:
