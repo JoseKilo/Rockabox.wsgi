@@ -102,6 +102,42 @@ the cron, the command will look something like this:
 Note: you can set day, hour, minute or month in frequency, values not set
 default to '\*'
 
+## SSl / Listening on different ports
+By default, port 80 will be listened on without SSL, to add SSL, add port 443
+like so:
+
+    wsgi_nginx_http_ports:
+
+        - port: 80
+          ssl: no
+
+        - port: 443
+          ssl: yes
+
+And make sure you also properly override the other wsgi_ssl vars found in
+defaults/main.yml, one other thing to remember is, you will need to take care
+of copying your ssl certificates/keyfiles to your server youerself, this might
+be done in your play like so:
+
+  pre_tasks:
+
+    name: Make sure the folder for the crt file exists
+    file: path='{{ wsgi_ssl_crt_file|dirname }}'
+          state=directory mode=700 owner=root group=root
+
+    name: Make sure the folder fo the key certificate exists
+    file: path='{{ wsgi_ssl_key_file|dirname }}'
+          state=directory mode=700 owner=root group=root
+
+    name: copy the ssl crt file across
+    copy: src='../../ssl/certificate.chained.crt' dest='{{ wsgi_ssl_crt_file }}'
+          mode=1130 owner=root group=root
+
+    name: copy the ssl key file across
+    copy: src='../../ssl/certificate.key' dest='{{ wsgi_ssl_key_file }}'
+          mode=1130 owner=root group=root
+
+
 ## Multiple wsgi apps in one play
 
 You can have multiple wsgi apps in one play, by using the `vars_file` var:
