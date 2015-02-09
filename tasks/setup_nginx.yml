@@ -31,12 +31,6 @@
   notify:
     - restart nginx
 
-- name: create self-signed SSL cert
-  command: openssl req -new -nodes -x509 -subj "/C=UK/ST=London/L=Longon/O=IT/CN=${ansible_fqdn}" -days 3650 -keyout {{ wsgi_ssl_key_file }} -out {{ wsgi_ssl_crt_file }} -extensions v3_ca creates={{ wsgi_ssl_crt_file }}
-  notify:
-    - restart nginx
-  when: wsgi_ssl_self_signed_certificate
-
 - name: Copy included Nginx configuration files
   copy: src={{ item }}
         dest=/etc/nginx/{{ item }}
