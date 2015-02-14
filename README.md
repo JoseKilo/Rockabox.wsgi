@@ -1,4 +1,6 @@
 # Rockabox WSGI App Container
+
+[![Join the chat at https://gitter.im/rockabox/Rockabox.wsgi](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rockabox/Rockabox.wsgi?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 This is a role for installing a wsgi application container. It makes the
 following assumptions about your application:
 
