@@ -55,10 +55,6 @@ wsgi_nginx_access_log_file: '{{ wsgi_log_dir }}nginx_access.log'
 wsgi_nginx_error_log_file: '{{ wsgi_log_dir }}nginx_error.log'
 wsgi_ssl: no
 wsgi_force_ssl: no
-wsgi_ssl_crt_file:
-wsgi_ssl_key_file:
-wsgi_ssl_self_signed_certificate: no
-wsgi_non_ssl_locations: []
 wsgi_nginx_include_paths: []
 
 # Cron tasks, see README for docs
