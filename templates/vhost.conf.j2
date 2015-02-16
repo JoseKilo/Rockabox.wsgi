@@ -48,20 +48,6 @@ server {
     }
     {% endif %}
 
-    {% if wsgi_ssl %}
-    {% for location_glob in wsgi_non_ssl_locations: %}
-    location ~ {{ location_glob }} {
-        if ( $scheme = https ) {
-            rewrite ^ http://$host$request_uri last;
-        }
-        if (!-f $request_filename) {
-            proxy_pass http://{{ wsgi_project_name }}_wsgi_server;
-            break;
-        }
-    }
-    {% endfor %}
-    {% endif %}
-
     location / {
         # if this file is found, show maintenance message
          if (-f {{ wsgi_path }}maintenance.html) {
