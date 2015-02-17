@@ -5,6 +5,7 @@ SOCKFILE={{ wsgi_virtualenv }}run/gunicorn.sock
 USER={{ wsgi_gunicorn_user }}
 GROUP={{ wsgi_gunicorn_group }}
 NUM_WORKERS={{ wsgi_gunicorn_num_workers }}
+TIMEOUT={{ wsgi_gunicorn_timeout }}
 
 # Set this to 0 for unlimited requests. During development, you might want to
 # set this to 1 to automatically restart the process on each request (i.e. your
@@ -31,6 +32,7 @@ exec gunicorn {{ wsgi_wsgi_path }} \
         --workers $NUM_WORKERS \
         --max-requests $MAX_REQUESTS \
         --user=$USER --group=$GROUP \
+        --timeout=$TIMEOUT \
         --log-level=critical \
         --log-file={{ wsgi_log_dir }}{{ wsgi_project_name }}.log \
         --pid={{ wsgi_virtualenv }}bin/{{ wsgi_project_name }}.pid \
