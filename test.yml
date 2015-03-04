@@ -1,0 +1,8 @@
+---
+
+- name: Test the wsgi_app_container role
+  hosts: rockabox.local
+  sudo: yes
+  sudo_user: root
+  roles:
+    - role: Rockabox.wsgi_app_container
