@@ -1,7 +1,7 @@
 ---
 
 - name: Test the wsgi_app_container role
-  hosts: rockabox.local
+  hosts: all
   sudo: yes
   sudo_user: root
   vars_files:
@@ -10,3 +10,6 @@
     - include: tasks/main.yml
   handlers:
     - include: handlers/main.yml
+  vars:
+    wsgi_project_name: 'my_project'
+    wsgi_wsgi_path: 'my.wsgi.path'
