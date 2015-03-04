@@ -4,5 +4,9 @@
   hosts: rockabox.local
   sudo: yes
   sudo_user: root
-  roles:
-    - role: Rockabox.wsgi_app_container
+  vars_files:
+    - defaults/main.yml
+  tasks:
+    - include: tasks/main.yml
+  handlers:
+    - include: handlers/main.yml
