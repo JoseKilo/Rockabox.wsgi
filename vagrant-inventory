@@ -1,2 +1,2 @@
 [rockabox]
-rockabox.local ansible_ssh_host=192.168.50.0 ansible_ssh_port=22
+rockabox.local ansible_ssh_host=192.168.50.10 ansible_ssh_port=22

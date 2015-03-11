@@ -4,6 +4,11 @@
   include_vars: "{{ vars_file }}"
   when: vars_file is defined
 
+- name: Check if a project has been deployed
+  stat: path='{{ wsgi_path }}current'
+  register: deployed_application
+  changed_when: false
+
 - include: setup_system.yml
 
 - include: create_users_and_groups.yml

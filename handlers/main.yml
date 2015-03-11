@@ -1,7 +1,8 @@
 ---
 
 - name: restart applications
-  supervisorctl: name=all state=restarted
+  supervisorctl: name={{ wsgi_project_name }} state=restarted
+  when: deployed_application.stat.exists == true
 
 - name: restart nginx
   service: name=nginx state=restarted
