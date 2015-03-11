@@ -33,14 +33,14 @@
 - name: Access Control | Get our vagrant key
   command: grep -r "vagrant insecure public key" /home/vagrant/.ssh/authorized_keys
   register: vagrant_key
-  when: vagrant_home.stat.isdir is defined
+  when: vagrant_home.stat.isdir is defined and vagrant_home.stat.isdir
   tags:
     - keys
 
 - name: Access Control | Copy our vagrant key if we are using vagrant
   authorized_key: user={{ wsgi_gunicorn_user }}
                   key="{{ vagrant_key.stdout }}" state=present
-  when: vagrant_home.stat.isdir is defined
+  when: vagrant_home.stat.isdir is defined and vagrant_home.stat.isdir
   tags:
     - keys
 
