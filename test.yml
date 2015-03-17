@@ -6,6 +6,9 @@
   sudo_user: root
   vars_files:
     - defaults/main.yml
+  pre_tasks:
+    - name: Ensure nginx is installed
+      apt: name=nginx update_cache=true state=installed
   tasks:
     - include: tasks/main.yml
   handlers:

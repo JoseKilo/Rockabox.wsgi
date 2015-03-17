@@ -16,7 +16,7 @@
   group: name={{ wsgi_gunicorn_group }} system=yes state=present
 
 - name: Users and Groups | Add the application user to the application group
-  user: name={{ wsgi_gunicorn_user }} groups={{ wsgi_gunicorn_group }}
+  user: name={{ wsgi_gunicorn_user }} group={{ wsgi_gunicorn_group }}
         state=present
 
 - name: Access Control | Add our public deploy key to our applications authorized keys
@@ -34,6 +34,7 @@
   command: grep -r "vagrant insecure public key" /home/vagrant/.ssh/authorized_keys
   register: vagrant_key
   when: vagrant_home.stat.isdir is defined and vagrant_home.stat.isdir
+  changed_when: false
   tags:
     - keys
 
