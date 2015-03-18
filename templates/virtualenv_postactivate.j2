@@ -28,8 +28,6 @@ export {{ wsgi_env_prefix|upper }}_STATIC_DIR='{{ wsgi_static_dir }}'
 export {{ wsgi_env_prefix|upper }}_MEDIA_DIR='{{ wsgi_media_dir }}'
 
 # Additional project specific env vars
-{% if wsgi_env_vars is mapping %}
-    {% for key, value in wsgi_env_vars.iteritems() %}
-    export {{ key|upper }}='{{ value }}'
-    {% endfor %}
-{% endif %}
+{% for key, value in wsgi_env_vars.iteritems() %}
+export {{ key|upper }}='{{ value }}'
+{% endfor %}
