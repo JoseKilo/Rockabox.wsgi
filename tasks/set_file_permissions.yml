@@ -11,6 +11,6 @@
   notify: restart applications
 
 - name: Ensure that the log file permissions are set properly
-  file: path={{ wsgi_log_dir }} recurse=yes owner={{ wsgi_gunicorn_user }}
+  file: path={{ wsgi_log_dir }} owner={{ wsgi_gunicorn_user }}
         group={{ wsgi_gunicorn_group }} state=directory
   notify: restart applications

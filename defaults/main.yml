@@ -34,7 +34,7 @@ wsgi_log_dir: '/var/log/{{ wsgi_project_name }}/'
 wsgi_static_dir: '{{ wsgi_path }}current/static/'
 wsgi_media_dir: '{{ wsgi_storage_dir }}{{ wsgi_project_name }}/media/'
 wsgi_databases: []
-wsgi_env_vars: []
+wsgi_env_vars: {}
 
 # Expose this app via a webserver
 wsgi_expose: yes

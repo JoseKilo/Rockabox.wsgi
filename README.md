@@ -1,17 +1,18 @@
 # Rockabox WSGI App Container
 
 [![Join the chat at https://gitter.im/rockabox/Rockabox.wsgi](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rockabox/Rockabox.wsgi?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+[![Build Status](https://travis-ci.org/rockabox/Rockabox.wsgi.svg?branch=master)](https://travis-ci.org/rockabox/Rockabox.wsgi)
+
 This is a role for installing a wsgi application container. It makes the
 following assumptions about your application:
 
 * It has a [wsgi](http://wsgi.readthedocs.org/en/latest/) file, see below
-* You have installed Nginx in another role prior to running this one \*
+* You have installed Nginx in another role prior to running this one
 * You have a public key generated and stored at `~/.ssh/id_rsa.pub`
-(see [this guide](https://help.github.com/articles/generating-ssh-keys/) for help)**
+(see [this guide](https://help.github.com/articles/generating-ssh-keys/) for help)*
 
-\* e.g - [Stouts Nginx](https://galaxy.ansible.com/list#/roles/854)
-
-\*\* Unless you have specified another public key in `wsgi_ssh_key`
+\* Unless you have specified another public key in `wsgi_ssh_key`
 
 ## Role variables:
 
@@ -42,7 +43,7 @@ and your ssh session:
     PREFIX_STATIC_DIR (The location of your static files directory, if you have one)
     PREFIX_MEDIA_DIR (The location of your media files directory, if you have one)
 
-Where `PREFIX` is wsgi\_project\_name in upper case, you can override this
+Where `PREFIX` is `wsgi_project_name` in upper case, you can overide this
 with `wsgi_env_prefix`
 
 Also any databases you have defined in your application will be available as
