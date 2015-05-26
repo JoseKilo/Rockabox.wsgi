@@ -105,41 +105,16 @@ the cron, the command will look something like this:
 Note: you can set day, hour, minute or month in frequency, values not set
 default to '\*'
 
-## SSl / Listening on different ports
-By default, port 80 will be listened on without SSL, to add SSL, add port 443
-like so:
+## SSl
+If you wish to use SSL set the `wsgi_ssl` variable to `yes`, and define the
+following paths to your key/cert files, if defined, these will be copied to
+the server during the play.
 
-    wsgi_nginx_http_ports:
+    wsgi_local_ssl_crt_file: /path/to/crt_file/on/host.crt
+    wsgi_local_ssl_key_file: /path/to/key_file/on/host.key.pem
+    wsgi_local_ssl_staple_crt_file: /path/to/staple_file/on/host.key.pem
 
-        - port: 80
-          ssl: no
-
-        - port: 443
-          ssl: yes
-
-And make sure you also properly override the other wsgi_ssl vars found in
-defaults/main.yml, one other thing to remember is, you will need to take care
-of copying your ssl certificates/keyfiles to your server youerself, this might
-be done in your play like so:
-
-  pre_tasks:
-
-    name: Make sure the folder for the crt file exists
-    file: path='{{ wsgi_ssl_crt_file|dirname }}'
-          state=directory mode=700 owner=root group=root
-
-    name: Make sure the folder fo the key certificate exists
-    file: path='{{ wsgi_ssl_key_file|dirname }}'
-          state=directory mode=700 owner=root group=root
-
-    name: copy the ssl crt file across
-    copy: src='../../ssl/certificate.chained.crt' dest='{{ wsgi_ssl_crt_file }}'
-          mode=1130 owner=root group=root
-
-    name: copy the ssl key file across
-    copy: src='../../ssl/certificate.key' dest='{{ wsgi_ssl_key_file }}'
-          mode=1130 owner=root group=root
-
+Note: Paths can be relative to the role, or absolute
 
 ## Multiple wsgi apps in one play
 
