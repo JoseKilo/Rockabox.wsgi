@@ -110,11 +110,14 @@ If you wish to use SSL set the `wsgi_ssl` variable to `yes`, and define the
 following paths to your key/cert files, if defined, these will be copied to
 the server during the play.
 
-    wsgi_local_ssl_crt_file: /path/to/crt_file/on/host.crt
-    wsgi_local_ssl_key_file: /path/to/key_file/on/host.key.pem
-    wsgi_local_ssl_staple_crt_file: /path/to/staple_file/on/host.key.pem
+    wsgi_local_ssl_crt_file:  /path/to/signed_cert_plus_intermediates;
+    wsgi_local_ssl_key_file:  /path/to/private_key;
+    wsgi_local_ssl_staple_crt_file: /path/to/root_CA_cert_plus_intermediates # Optional, omit if you don't need it
+    wsgi_local_ssl_diffie_hellman_pem: /path/to/dhparam.pem  # Optional, omit if you don't need it
 
 Note: Paths can be relative to the role, or absolute
+
+Thanks to Mozilla for [their configuration generator](https://mozilla.github.io/server-side-tls/ssl-config-generator/)
 
 ## Multiple wsgi apps in one play
 
