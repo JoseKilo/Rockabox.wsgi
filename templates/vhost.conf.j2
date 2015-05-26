@@ -7,9 +7,7 @@ upstream {{ wsgi_project_name }}_wsgi_server {
 }
 
 server {
-    {% for port_config in wsgi_nginx_http_ports %}
-    listen {{ port_config.port }};
-    {% endfor %}
+    listen {{ wsgi_nginx_http_port }};
     client_max_body_size 4G;
 
     {% if wsgi_server_names %}
