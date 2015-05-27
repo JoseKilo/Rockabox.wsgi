@@ -89,9 +89,13 @@ an example is as follows:
         frequency:
             minute: "*/5"
         logfile: "/dev/null"
+        environment:
+            MY_ENV_VAR: 'MY_VALUE'
+            MY_ENV_VAR_2: 'MY_VALUE_2'
 
-All of your environmental variables are made available to the process running
-the cron, the command will look something like this:
+Providing additional environment variables by the ``environment`` argument is
+optional. Note that all of your environmental variables are made available to
+the process running the cron, the command will look something like this:
 
     /bin/bash -c "source ~/.bash_profile && {{ command }} &>> {{ logfile }}
 
