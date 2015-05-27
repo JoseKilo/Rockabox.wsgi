@@ -2,20 +2,18 @@
 
 - name: Cron | Setup App cron tasks
   cron:
-      name: "App cron task {{ item.name }}"
-      user: "{{ item.user }}"
-      day: "{{ item.frequency.day | default('*') }}"
-      hour: "{{ item.frequency.hour | default('*') }}"
-      minute: "{{ item.frequency.minute | default('*') }}"
-      month: "{{ item.frequency.month | default('*') }}"
-      weekday: "{{ item.frequency.weekday | default('*') }}"
-      job:
-           source ~/.bash_profile &&
-           {{
-              ('export ' + item.environment | attr('iteritems')() | map('join', '=') | join('; export ') + ' &&')
-              if item.environment | default({})
-              else ''
-           }}
-           {{ item.command }}
-           &>> {{ item.logfile }}
+    name: "App cron task {{ item.name }}"
+    user: "{{ item.user }}"
+    day: "{{ item.frequency.day | default('*') }}"
+    hour: "{{ item.frequency.hour | default('*') }}"
+    minute: "{{ item.frequency.minute | default('*') }}"
+    month: "{{ item.frequency.month | default('*') }}"
+    weekday: "{{ item.frequency.weekday | default('*') }}"
+    job:
+      source ~/.bash_profile &&
+      {% for variable in (item.environment|default({})).iteritems() %}
+        export {{ variable[0] }}="{{ variable[1] }}" &&
+      {%- endfor %}
+      {{ item.command }}
+      &>> {{ item.logfile }}
   with_items: wsgi_cron_tasks
