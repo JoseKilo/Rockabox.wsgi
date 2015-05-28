@@ -126,17 +126,33 @@ default to '\*'
 
 ## SSl
 If you wish to use SSL set the `wsgi_ssl` variable to `yes`, and define the
-following paths to your key/cert files, if defined, these will be copied to
-the server during the play.
+following paths to your key/cert files
 
     wsgi_local_ssl_crt_file:  /path/to/signed_cert_plus_intermediates;
     wsgi_local_ssl_key_file:  /path/to/private_key;
 
-    # The following are recommended, but optional, omit if not needed
-    wsgi_local_ssl_staple_crt_file: /path/to/root_CA_cert_plus_intermediates
+
+To Use [Diffie Hellman Key Exchange](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange),
+set the following varialbes:
+
+    wsgi_ssl_diffie_hellman: yes
     wsgi_local_ssl_diffie_hellman_pem: /path/to/dhparam.pem
 
-Note: The path needs to be relative to the playbook, or absolute
+To Use OSCP for speeding up your ssl handshakes, set `wsgi_ssl_ocsp: yes` and
+set the following variables:
+
+    wsgi_ssl_ocsp: yes
+    wsgi_local_ssl_staple_crt_file: /path/to/root_CA_cert_plus_intermediates
+
+Note: You will need to ensure you have copied the certificates/keys onto the
+server in the given locations, before this role is run, e.g:
+
+  ...
+  pre_tasks:
+    - name: Copy the ssl key file across
+      copy: src='./ssl/my.key' dest='/my/destination'
+    ...
+  ...
 
 Thanks to Mozilla for their [SSL Configuration Generator](https://mozilla.github.io/server-side-tls/ssl-config-generator/)
 

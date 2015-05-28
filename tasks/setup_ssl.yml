@@ -1,31 +1,5 @@
 ---
 
-- name: Make sure the folder for the crt file exists
-  file: path='{{ wsgi_ssl_crt_file|dirname }}' state=directory
-
-- name: Make sure the folder fo the key certificate exists
-  file: path='{{ wsgi_ssl_key_file|dirname }}' state=directory
-
 - name: Add our nginx SSL configuration file
   template: src=ssl.j2 dest=/etc/nginx/snippets/ssl.conf backup=yes
   notify: restart nginx
-
-- name: Copy the ssl crt file across
-  copy: src='{{ wsgi_local_ssl_crt_file }}' dest='{{ wsgi_ssl_crt_file }}'
-        mode=1130 owner=root group=root
-  when: wsgi_local_ssl_crt_file is defined
-
-- name: Copy the ssl key file across
-  copy: src='{{ wsgi_local_ssl_key_file }}' dest='{{ wsgi_ssl_key_file }}'
-        mode=1130 owner=root group=root
-  when: wsgi_local_ssl_key_file is defined
-
-- name: Copy the ca cert file across
-  copy: src='{{ wsgi_local_ssl_staple_crt_file }}' dest='{{ wsgi_ssl_staple_crt_file }}'
-        mode=1130 owner=root group=root
-  when: wsgi_local_ssl_staple_crt_file is defined
-
-- name: Copy the diffie hellman key across
-  copy: src='{{ wsgi_local_ssl_diffie_hellman_pem }}' dest='{{ wsgi_ssl_diffie_hellman_pem }}'
-        mode=1130 owner=root group=root
-  when: wsgi_local_ssl_diffie_hellman_pem is defined

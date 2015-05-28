@@ -58,6 +58,8 @@ wsgi_nginx_error_log_file: '{{ wsgi_log_dir }}nginx_error.log'
 # If set to yes, the webserver will listen on port 443 also
 wsgi_ssl: no
 wsgi_force_ssl: no
+wsgi_ssl_ocsp: no
+wsgi_ssl_diffie_hellman: no
 wsgi_nginx_include_paths: []
 wsgi_ssl_crt_file: '/etc/ssl/certs/{{ wsgi_project_name }}.crt'
 wsgi_ssl_key_file: '/etc/ssl/private/{{ wsgi_project_name }}.key'
