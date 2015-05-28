@@ -9,10 +9,9 @@ following assumptions about your application:
 
 * It has a [wsgi](http://wsgi.readthedocs.org/en/latest/) file, see below
 * You have installed Nginx in another role prior to running this one
-* You have a public key generated and stored at `~/.ssh/id_rsa.pub`
-(see [this guide](https://help.github.com/articles/generating-ssh-keys/) for help)*
+* You have a deployment key stored at `wsgi_ssh_key` (see defaults) \*
 
-\* Unless you have specified another public key in `wsgi_ssh_key`
+\* See [this guide](https://help.github.com/articles/generating-ssh-keys/) for help generating ssh keys
 
 ## Role variables:
 
@@ -20,20 +19,23 @@ following assumptions about your application:
 * `wsgi_project_name` (The name of your project, letters and underscores only)
 * `wsgi_wsgi_path` (the relative python path to your application's wsgi file)
 
-## Overidable
+### Overidable
 Loads! take a look in defaults/main.yml for the full list
 
 Once you have this role on your server, all you need to do is put your
-application at `wsgi_project_name@host.com:current` ...and you're good to go.
+wsgi application at `wsgi_project_name@host.com:current`, and your `wsgi_wsgi_path`
+points to your wsgi file...and you're good to go.
 
 To restart your application you can `sudo supervisorctl restart wsgi_project_name`
 you can ssh into your box as your application with\* `wsgi_project_name@host.com`
 
 \* Providing you did not set `wsgi_ssh: no`
 
+### Environmental Variables
 The following environmental variables are made available to your application
 and your ssh session:
 
+```yaml
     PREFIX_APP_PATH (The location of your project)
     PREFIX_APP_NAME (The name of your project)
     PREFIX_RELEASE_DIR (The location of your projects releases)
@@ -42,6 +44,7 @@ and your ssh session:
     PREFIX_PID (The location of your projects pid file)
     PREFIX_STATIC_DIR (The location of your static files directory, if you have one)
     PREFIX_MEDIA_DIR (The location of your media files directory, if you have one)
+```
 
 Where `PREFIX` is `wsgi_project_name` in upper case, you can overide this
 with `wsgi_env_prefix`
@@ -49,13 +52,29 @@ with `wsgi_env_prefix`
 Also any databases you have defined in your application will be available as
 environmental variables using the following format:
 
+```yaml
     PREFIX_DB_DBID_NAME (The name of your database)
     PREFIX_DB_DBID_USER (The username for your database)
     PREFIX_DB_DBID_PASSWORD (The password for your database)
     PREFIX_DB_DBID_HOST (The host for your database)
     PREFIX_DB_DBID_PORT (The port your database runs on)
+```
 
 Where DBID is the upper-cased id of your database, and PREFIX is as above.
+
+Also, any other environmental variables you need your application to have
+access to, should be stored in `wsgi_env_vars` like so:
+
+```yaml
+    wsgi_env_vars:
+        my_secret: 'super-secret-key'
+        ...
+```
+
+Note: the key names will be automatically upper-cased, to see a full list of
+env vars for your app:
+
+    ssh wsgi_project_name@host.com 'printenv | grep `wsgi_env_prefix`'
 
 ## Pil/Pillow support
 
@@ -68,7 +87,7 @@ To deploy to this container, ensure your project is available in
 
     $PREFIX_APP_RELEASE_DIR/current
 
-And ensure your projects dependencies are installed into
+And ensure your projects pip dependencies are installed into
 
     $PREFIX_APP_VENV
 
@@ -112,12 +131,14 @@ the server during the play.
 
     wsgi_local_ssl_crt_file:  /path/to/signed_cert_plus_intermediates;
     wsgi_local_ssl_key_file:  /path/to/private_key;
-    wsgi_local_ssl_staple_crt_file: /path/to/root_CA_cert_plus_intermediates # Optional, omit if you don't need it
-    wsgi_local_ssl_diffie_hellman_pem: /path/to/dhparam.pem  # Optional, omit if you don't need it
 
-Note: Paths can be relative to the role, or absolute
+    # The following are recommended, but optional, omit if not needed
+    wsgi_local_ssl_staple_crt_file: /path/to/root_CA_cert_plus_intermediates
+    wsgi_local_ssl_diffie_hellman_pem: /path/to/dhparam.pem
 
-Thanks to Mozilla for [their configuration generator](https://mozilla.github.io/server-side-tls/ssl-config-generator/)
+Note: The path needs to be relative to the playbook, or absolute
+
+Thanks to Mozilla for their [SSL Configuration Generator](https://mozilla.github.io/server-side-tls/ssl-config-generator/)
 
 ## Multiple wsgi apps in one play
 
