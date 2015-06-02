@@ -9,10 +9,9 @@ following assumptions about your application:
 
 * It has a [wsgi](http://wsgi.readthedocs.org/en/latest/) file, see below
 * You have installed Nginx in another role prior to running this one
-* You have a public key generated and stored at `~/.ssh/id_rsa.pub`
-(see [this guide](https://help.github.com/articles/generating-ssh-keys/) for help)*
+* You have a deployment key stored at `wsgi_ssh_key` (see defaults) \*
 
-\* Unless you have specified another public key in `wsgi_ssh_key`
+\* See [this guide](https://help.github.com/articles/generating-ssh-keys/) for help generating ssh keys
 
 ## Role variables:
 
@@ -20,20 +19,23 @@ following assumptions about your application:
 * `wsgi_project_name` (The name of your project, letters and underscores only)
 * `wsgi_wsgi_path` (the relative python path to your application's wsgi file)
 
-## Overidable
+### Overidable
 Loads! take a look in defaults/main.yml for the full list
 
 Once you have this role on your server, all you need to do is put your
-application at `wsgi_project_name@host.com:current` ...and you're good to go.
+wsgi application at `wsgi_project_name@host.com:current`, and your `wsgi_wsgi_path`
+points to your wsgi file...and you're good to go.
 
 To restart your application you can `sudo supervisorctl restart wsgi_project_name`
 you can ssh into your box as your application with\* `wsgi_project_name@host.com`
 
 \* Providing you did not set `wsgi_ssh: no`
 
+### Environmental Variables
 The following environmental variables are made available to your application
 and your ssh session:
 
+```yaml
     PREFIX_APP_PATH (The location of your project)
     PREFIX_APP_NAME (The name of your project)
     PREFIX_RELEASE_DIR (The location of your projects releases)
@@ -42,6 +44,7 @@ and your ssh session:
     PREFIX_PID (The location of your projects pid file)
     PREFIX_STATIC_DIR (The location of your static files directory, if you have one)
     PREFIX_MEDIA_DIR (The location of your media files directory, if you have one)
+```
 
 Where `PREFIX` is `wsgi_project_name` in upper case, you can overide this
 with `wsgi_env_prefix`
@@ -49,13 +52,29 @@ with `wsgi_env_prefix`
 Also any databases you have defined in your application will be available as
 environmental variables using the following format:
 
+```yaml
     PREFIX_DB_DBID_NAME (The name of your database)
     PREFIX_DB_DBID_USER (The username for your database)
     PREFIX_DB_DBID_PASSWORD (The password for your database)
     PREFIX_DB_DBID_HOST (The host for your database)
     PREFIX_DB_DBID_PORT (The port your database runs on)
+```
 
 Where DBID is the upper-cased id of your database, and PREFIX is as above.
+
+Also, any other environmental variables you need your application to have
+access to, should be stored in `wsgi_env_vars` like so:
+
+```yaml
+    wsgi_env_vars:
+        my_secret: 'super-secret-key'
+        ...
+```
+
+Note: the key names will be automatically upper-cased, to see a full list of
+env vars for your app:
+
+    ssh wsgi_project_name@host.com 'printenv | grep `wsgi_env_prefix`'
 
 ## Pil/Pillow support
 
@@ -68,7 +87,7 @@ To deploy to this container, ensure your project is available in
 
     $PREFIX_APP_RELEASE_DIR/current
 
-And ensure your projects dependencies are installed into
+And ensure your projects pip dependencies are installed into
 
     $PREFIX_APP_VENV
 
@@ -109,41 +128,37 @@ the process running the cron, the command will look something like this:
 Note: you can set day, hour, minute or month in frequency, values not set
 default to '\*'
 
-## SSl / Listening on different ports
-By default, port 80 will be listened on without SSL, to add SSL, add port 443
-like so:
+## SSl
+If you wish to use SSL set the `wsgi_ssl` variable to `yes`, and define the
+following paths to your key/cert files
 
-    wsgi_nginx_http_ports:
+    wsgi_local_ssl_crt_file:  /path/to/signed_cert_plus_intermediates;
+    wsgi_local_ssl_key_file:  /path/to/private_key;
 
-        - port: 80
-          ssl: no
 
-        - port: 443
-          ssl: yes
+To Use [Diffie Hellman Key Exchange](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange),
+set the following varialbes:
 
-And make sure you also properly override the other wsgi_ssl vars found in
-defaults/main.yml, one other thing to remember is, you will need to take care
-of copying your ssl certificates/keyfiles to your server youerself, this might
-be done in your play like so:
+    wsgi_ssl_diffie_hellman: yes
+    wsgi_local_ssl_diffie_hellman_pem: /path/to/dhparam.pem
 
+To Use OSCP for speeding up your ssl handshakes, set `wsgi_ssl_ocsp: yes` and
+set the following variables:
+
+    wsgi_ssl_ocsp: yes
+    wsgi_local_ssl_staple_crt_file: /path/to/root_CA_cert_plus_intermediates
+
+Note: You will need to ensure you have copied the certificates/keys onto the
+server in the given locations, before this role is run, e.g:
+
+  ...
   pre_tasks:
+    - name: Copy the ssl key file across
+      copy: src='./ssl/my.key' dest='/my/destination'
+    ...
+  ...
 
-    name: Make sure the folder for the crt file exists
-    file: path='{{ wsgi_ssl_crt_file|dirname }}'
-          state=directory mode=700 owner=root group=root
-
-    name: Make sure the folder fo the key certificate exists
-    file: path='{{ wsgi_ssl_key_file|dirname }}'
-          state=directory mode=700 owner=root group=root
-
-    name: copy the ssl crt file across
-    copy: src='../../ssl/certificate.chained.crt' dest='{{ wsgi_ssl_crt_file }}'
-          mode=1130 owner=root group=root
-
-    name: copy the ssl key file across
-    copy: src='../../ssl/certificate.key' dest='{{ wsgi_ssl_key_file }}'
-          mode=1130 owner=root group=root
-
+Thanks to Mozilla for their [SSL Configuration Generator](https://mozilla.github.io/server-side-tls/ssl-config-generator/)
 
 ## Multiple wsgi apps in one play
 

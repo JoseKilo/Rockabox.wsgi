@@ -23,7 +23,8 @@
 
 - include: setup_supervisor.yml
 
+- include: setup_ssl.yml
+  when: wsgi_ssl
+
 - include: setup_nginx.yml
   when: wsgi_expose
-  tags:
-    - webserver

@@ -7,9 +7,12 @@ upstream {{ wsgi_project_name }}_wsgi_server {
 }
 
 server {
-    {% for port_config in wsgi_nginx_http_ports %}
-    listen {{ port_config.port }} {% if port_config.ssl %} ssl{% endif %};
-    {% endfor %}
+    listen {{ wsgi_nginx_http_port }};
+    client_max_body_size 4G;
+
+    {% if wsgi_server_names %}
+    server_name  {{ wsgi_server_names|join(' ') }};
+    {% endif %}
 
     keepalive_timeout {{ wsgi_keepalive_timeout }}s;
     proxy_read_timeout {{ wsgi_proxy_read_timeout }}s;
@@ -17,31 +20,11 @@ server {
     proxy_connect_timeout {{ wsgi_proxy_connect_timeout }}s;
     send_timeout {{ wsgi_send_timeout }}s;
     resolver_timeout {{ wsgi_resolver_timeout }}s;
+    resolver {{ wsgi_dns_resolver }};
 
     {% if wsgi_ssl %}
-
-    {% if wsgi_force_ssl %}
-    if ( $scheme = http ) {
-        rewrite ^ https://$host$request_uri last;
-    }
-    add_header Strict-Transport-Security "max-age=31536000; includeSubdomains";
+    include snippets/ssl.conf;
     {% endif %}
-
-    ssl_certificate     {{ wsgi_ssl_crt_file }};
-    ssl_certificate_key {{ wsgi_ssl_key_file }};
-    ssl_protocols       SSLv3 TLSv1 TLSv1.1 TLSv1.2;
-    ssl_ciphers         HIGH:!aNULL:!MD5;
-
-    {% endif %}
-
-    client_max_body_size 4G;
-
-    {% if wsgi_server_names %}
-    server_name  {{ wsgi_server_names|join(' ') }};
-    {% endif %}
-
-    access_log {{ wsgi_nginx_access_log_file }};
-    error_log {{ wsgi_nginx_error_log_file }};
 
     {% if wsgi_static_dir %}
     location /static/ {
@@ -83,6 +66,9 @@ server {
     location = /maintenance.html {
         root {{ wsgi_storage_dir }}{{ wsgi_project_name }};
     }
+
+    access_log {{ wsgi_nginx_access_log_file }};
+    error_log {{ wsgi_nginx_error_log_file }};
 
     {% for wsgi_nginx_include_path in wsgi_nginx_include_paths %}
     include {{ wsgi_nginx_include_path }};
