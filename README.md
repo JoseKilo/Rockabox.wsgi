@@ -128,8 +128,8 @@ the process running the cron, the command will look something like this:
 Note: you can set day, hour, minute or month in frequency, values not set
 default to '\*'
 
-You can also specify that your command shouldn't run twice at once, in that
-case it will be locked on a file using ``flock``. You must ensure that you
+You can also specify that your command shouldn't run multiple times at once, in
+that case it will be locked on a file using ``flock``. You must ensure that you
 provide a ``slug`` to identify your cron task, and it will be used to name
 the locking file::
 
