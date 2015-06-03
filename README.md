@@ -109,7 +109,7 @@ an example is as follows:
 
     wsgi_cron_tasks:
 
-        name: Rotate the logs
+      - name: Rotate the logs
         user: root
         command: "/usr/sbin/logrotate -f /etc/logrotate.d/log_conf"
         frequency:
@@ -127,6 +127,22 @@ the process running the cron, the command will look something like this:
 
 Note: you can set day, hour, minute or month in frequency, values not set
 default to '\*'
+
+You can also specify that your command shouldn't run multiple times at once, in
+that case it will be locked on a file using ``flock``. You must ensure that you
+provide a ``slug`` to identify your cron task, and it will be used to name
+the locking file::
+
+    wsgi_cron_tasks:
+
+      - name: Rotate the logs
+        slug: rotate_logs
+        lock: yes
+        user: root
+        command: "/usr/sbin/logrotate -f /etc/logrotate.d/log_conf"
+        frequency:
+            minute: "*/5"
+        logfile: "/dev/null"
 
 ## SSl
 If you wish to use SSL set the `wsgi_ssl` variable to `yes`, and define the
@@ -149,14 +165,14 @@ set the following variables:
     wsgi_local_ssl_staple_crt_file: /path/to/root_CA_cert_plus_intermediates
 
 Note: You will need to ensure you have copied the certificates/keys onto the
-server in the given locations, before this role is run, e.g:
+server in the given locations, before this role is run, e.g::
 
-  ...
-  pre_tasks:
-    - name: Copy the ssl key file across
-      copy: src='./ssl/my.key' dest='/my/destination'
     ...
-  ...
+    pre_tasks:
+      - name: Copy the ssl key file across
+        copy: src='./ssl/my.key' dest='/my/destination'
+      ...
+    ...
 
 Thanks to Mozilla for their [SSL Configuration Generator](https://mozilla.github.io/server-side-tls/ssl-config-generator/)
 
