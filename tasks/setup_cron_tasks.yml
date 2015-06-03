@@ -10,11 +10,14 @@
     month: "{{ item.frequency.month | default('*') }}"
     weekday: "{{ item.frequency.weekday | default('*') }}"
     job:
-      flock -n {{ item.name|replace(' ', '_')|lower }}.lockfile /bin/bash -c '
+      "{% if (item.lock | default(false)) %}
+      flock -n {{ item.slug }}.lockfile
+      {% endif %}
+      /bin/bash -c '
       source ~/.bash_profile &&
       {% for variable in (item.environment|default({})).iteritems() %}
-        export {{ variable[0] }}="{{ variable[1] }}" &&
+        export {{ variable[0] }}=\"{{ variable[1] }}\" &&
       {%- endfor %}
       {{ item.command }}
-      &>> {{ item.logfile }}'
+      &>> {{ item.logfile }}'"
   with_items: wsgi_cron_tasks
