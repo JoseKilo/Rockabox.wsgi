@@ -3,11 +3,15 @@
 - name: Load in project specific vars
   include_vars: "{{ vars_file }}"
   when: vars_file is defined
+  tags:
+    - env_vars
 
 - name: Check if a project has been deployed
   stat: path='{{ wsgi_path }}current'
   register: deployed_application
   changed_when: false
+  tags:
+    - env_vars
 
 - include: setup_system.yml
 
