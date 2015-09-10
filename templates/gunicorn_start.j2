@@ -36,4 +36,5 @@ exec gunicorn {{ wsgi_wsgi_path }} \
         --log-level=critical \
         --log-file={{ wsgi_log_dir }}{{ wsgi_project_name }}.log \
         --pid={{ wsgi_virtualenv }}bin/{{ wsgi_project_name }}.pid \
+        --limit-request-line={{ wsgi_request_line_limit }} \
         --bind=unix:$SOCKFILE &>> {{ wsgi_log_dir }}{{ wsgi_project_name }}.log

@@ -44,6 +44,7 @@ wsgi_gunicorn_user: '{{ wsgi_project_name }}'
 wsgi_gunicorn_group: '{{ wsgi_project_name }}'
 wsgi_gunicorn_num_workers: 5
 wsgi_gunicorn_max_requests: 0
+wsgi_request_line_limit: 8192
 
 # Nginx
 wsgi_server_names: []
