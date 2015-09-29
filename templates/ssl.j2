@@ -1,4 +1,4 @@
-listen 443 ssl;
+listen 443{% if wsgi_ssl_set_default_server %} default_server {% endif %}ssl;
 
 # certs sent to the client in SERVER HELLO are concatenated in ssl_certificate
 ssl_certificate     {{ wsgi_ssl_crt_file }};
