@@ -27,3 +27,10 @@
   apt: name={{ item }} update_cache={{ wsgi_update_apt_cache }} force=yes
        state=installed
   with_items: wsgi_extra_apt_packages
+
+- name: Create the log rotation script
+  template: src=logrotate.j2
+            dest="/etc/logrotate.d/{{ wsgi_project_name }}"
+            mode=0644 owner=root group=root
+  tags:
+    - logs
