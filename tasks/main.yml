@@ -5,6 +5,7 @@
   when: vars_file is defined
   tags:
     - env_vars
+    - always
 
 - name: Check if a project has been deployed
   stat: path='{{ wsgi_path }}current'
@@ -12,6 +13,7 @@
   changed_when: false
   tags:
     - env_vars
+    - always
 
 - include: setup_system.yml
 
